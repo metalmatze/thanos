@@ -1,1 +1,2 @@
-(import 'compaction.libsonnet')
+(import 'compaction.libsonnet') +
+(import 'ruler.libsonnet')

@@ -90,3 +90,52 @@ tests:
 #         severity: critical
 #       exp_annotations:
 #         message: 'Thanos Compaction has not been run in 24 hours. Long term storage queries will be slower.'
+
+- interval: 1m
+  input_series:
+  - series: 'thanos_alert_queue_alerts_dropped_total{app="thanos-rule"}'
+    values: '0 1 2 3 4 5 6'
+  alert_rule_test:
+  - eval_time: 1m
+    alertname: ThanosRuleIsDroppingAlerts
+  - eval_time: 2m
+    alertname: ThanosRuleIsDroppingAlerts
+  - eval_time: 3m
+    alertname: ThanosRuleIsDroppingAlerts
+  - eval_time: 4m
+    alertname: ThanosRuleIsDroppingAlerts
+  - eval_time: 5m
+    alertname: ThanosRuleIsDroppingAlerts
+  - eval_time: 6m
+    alertname: ThanosRuleIsDroppingAlerts
+    exp_alerts:
+    - exp_labels:
+        app: thanos-rule
+        severity: warning
+      exp_annotations:
+        message: 'Thanos Rule is dropping alerts. Alerts are not working.'
+
+- interval: 1m
+  input_series:
+  - series: grpc_server_handled_total{grpc_code="Unavailable",app="thanos-rule"}
+    values: '0 1 2 3 4 5 6'
+  alert_rule_test:
+  - eval_time: 1m
+    alertname: ThanosRuleGrpcErrorRate
+  - eval_time: 2m
+    alertname: ThanosRuleGrpcErrorRate
+  - eval_time: 3m
+    alertname: ThanosRuleGrpcErrorRate
+  - eval_time: 4m
+    alertname: ThanosRuleGrpcErrorRate
+  - eval_time: 5m
+    alertname: ThanosRuleGrpcErrorRate
+  - eval_time: 6m
+    alertname: ThanosRuleGrpcErrorRate
+    exp_alerts:
+    - exp_labels:
+        app: thanos-rule
+        grpc_code: Unavailable
+        severity: warning
+      exp_annotations:
+        message: 'Thanos Rule is returning Internal/Unavailable errors. Recording Rules are not working.'
