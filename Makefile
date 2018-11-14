@@ -166,6 +166,13 @@ vendor: Gopkg.toml Gopkg.lock $(DEP_FINISHED) | $(DEP)
 	@echo ">> dep ensure"
 	@$(DEP) ensure $(DEPARGS) || rm $(DEP_FINISHED)
 
+mixin/prometheus_alerts.yaml: mixin/*.libsonnet mixin/alerts/*.libsonnet
+	jsonnet -e '(import "mixin/mixin.libsonnet").prometheusAlerts' | gojsontoyaml > $@
+
+.PHONY: mixin/tests.yaml
+mixin/tests.yaml: mixin/prometheus_alerts.yaml
+	promtool test rules mixin/tests.yaml
+
 $(GOIMPORTS):
 	@echo ">> fetching goimports"
 	@go get -u golang.org/x/tools/cmd/goimports

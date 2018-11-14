@@ -1,0 +1,92 @@
+rule_files:
+  - mixin/prometheus_alerts.yaml
+
+evaluation_interval: 1m
+
+tests:
+- interval: 1m
+  input_series:
+  - series: 'thanos_compactor_halted{app="thanos-compact"}'
+    values: '1 1 1 1 1 1'
+  alert_rule_test:
+  - eval_time: 1m
+    alertname: ThanosCompactHalted
+  - eval_time: 2m
+    alertname: ThanosCompactHalted
+  - eval_time: 3m
+    alertname: ThanosCompactHalted
+  - eval_time: 4m
+    alertname: ThanosCompactHalted
+  - eval_time: 5m
+    alertname: ThanosCompactHalted
+    exp_alerts:
+    - exp_labels:
+        app: thanos-compact
+        severity: warning
+      exp_annotations:
+        message: 'Thanos compaction has failed to run and now is halted.'
+
+- interval: 1m
+  input_series:
+  - series: 'prometheus_tsdb_compactions_failed_total{app="thanos-compact"}'
+    values: '0 1 2 3 4 5 6'
+  alert_rule_test:
+  - eval_time: 1m
+    alertname: ThanosCompactCompactionsFailed
+  - eval_time: 2m
+    alertname: ThanosCompactCompactionsFailed
+  - eval_time: 3m
+    alertname: ThanosCompactCompactionsFailed
+  - eval_time: 4m
+    alertname: ThanosCompactCompactionsFailed
+  - eval_time: 5m
+    alertname: ThanosCompactCompactionsFailed
+  - eval_time: 6m
+    alertname: ThanosCompactCompactionsFailed
+    exp_alerts:
+    - exp_labels:
+        app: thanos-compact
+        severity: warning
+      exp_annotations:
+        message: 'Thanos Compact is failing compaction. Long term storage queries will be slower.'
+
+- interval: 1m
+  input_series:
+  - series: 'thanos_objstore_bucket_operation_failures_total{app="thanos-compact"}'
+    values: '0 1 2 3 4 5 6'
+  alert_rule_test:
+  - eval_time: 1m
+    alertname: ThanosCompactBucketOperationsFailed
+  - eval_time: 2m
+    alertname: ThanosCompactBucketOperationsFailed
+  - eval_time: 3m
+    alertname: ThanosCompactBucketOperationsFailed
+  - eval_time: 4m
+    alertname: ThanosCompactBucketOperationsFailed
+  - eval_time: 5m
+    alertname: ThanosCompactBucketOperationsFailed
+  - eval_time: 6m
+    alertname: ThanosCompactBucketOperationsFailed
+    exp_alerts:
+    - exp_labels:
+        app: thanos-compact
+        severity: warning
+      exp_annotations:
+        message: 'Thanos Compact bucket operations are failing. Long term storage queries will be slower.'
+
+# TODO: How to test with time()?
+# - interval: 1m
+#   input_series:
+#   - series: 'thanos_objstore_bucket_last_successful_upload_time{app="thanos-compact"}'
+#     values: '0 1 2'
+#   alert_rule_test:
+#   - eval_time: 1m
+#     alertname: ThanosCompactNotRunIn24Hours
+#   - eval_time: 2m
+#     alertname: ThanosCompactNotRunIn24Hours
+#     exp_alerts:
+#     - exp_labels:
+#         app: thanos-compact
+#         severity: critical
+#       exp_annotations:
+#         message: 'Thanos Compaction has not been run in 24 hours. Long term storage queries will be slower.'
