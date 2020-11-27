@@ -1,0 +1,33 @@
+{
+  "title": "Intro: kube-thanos - Kubernetes specific configuration for deploying Thanos",
+  "description": "Learn how to generate your Kubernetes YAML with kube-thanos.",
+  "difficulty": "Beginner",
+  "time": "10-15 Minutes",
+  "details": {
+    "steps": [
+      {
+        "title": "Install kube-thanos as a dependency",
+        "text": "step-01.md"
+      },
+      {
+        "title": "Generating the Thanos Query YAML",
+        "text": "step-02.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "courseData": "courseBase.sh",
+      "credits": "https://thanos.io"
+    }
+  },
+  "files": [],
+  "environment": {
+    "uilayout": "editor-terminal",
+    "uisettings": "yaml",
+    "showdashboard": true,
+    "dashboards": []
+  },
+  "backend": {
+    "imageid": "golang:1.14"
+  }
+}

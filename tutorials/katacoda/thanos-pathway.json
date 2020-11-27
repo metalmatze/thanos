@@ -24,6 +24,11 @@
       "description": "Extend your Prometheus setup for Multiple Teams use with Thanos."
     },
     {
+      "course_id": "9-kube-thanos",
+      "title": "Intro: kube-thanos - Kubernetes specific configuration for deploying Thanos",
+      "description": "Learn how to generate your Kubernetes YAML with kube-thanos."
+    },
+    {
       "course_id": "x-playground",
       "title": "Playground: All-in, Interactive Thanos un-guided Demo",
       "description": "Demo playground that spins all the components from previous courser together."
